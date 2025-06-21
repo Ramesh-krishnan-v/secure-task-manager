@@ -48,10 +48,14 @@
     "@angular/router": "^17.2.0",
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
+    "@nestjs/mapped-types": "^2.1.0",
     "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/typeorm": "^11.0.0",
     "axios": "^1.6.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "sqlite3": "^5.1.7",
+    "typeorm": "^0.3.25",
     "zone.js": "^0.15.1"
   }
 }

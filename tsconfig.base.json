@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
+    "baseUrl": ".",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["ES2022", "dom"],
@@ -11,8 +12,9 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "@secure-task-manager/auth": ["libs/auth/src/index.ts"],
-      "@secure-task-manager/data": ["libs/data/src/index.ts"]
+      "@secure-task-manager/auth/*": ["libs/auth/src/*"],
+      "@secure-task-manager/data/*": ["libs/data/src/*"],
+      "@secure-task-manager/api/*": ["apps/api/src/*"]
     }
   }
 }
