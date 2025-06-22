@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { UserCreateComponent } from './pages/user-create/user-create.component';\nexport const appRoutes = [{\n  path: '',\n  redirectTo: 'create-user',\n  pathMatch: 'full'\n},\n// Optional default\n{\n  path: 'create-user',\n  component: UserCreateComponent\n}];","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

@@ -1,15 +1,14 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
-  ForbiddenException,
+  Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from './role.enum';
 import { ROLES_KEY } from './roles.decorator';
 
 @Injectable()
-export class RoleGuard implements CanActivate {
+export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
@@ -17,22 +16,10 @@ export class RoleGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-
     if (!requiredRoles) {
       return true;
     }
-
-    const request = context.switchToHttp().getRequest();
-    
-    // TEMP: inject a fake role for testing until real auth is added
-    request.user = { role: 'Viewer' }; // change to 'Admin' or 'Viewer' to simulate other roles
-
-    const userRole = request.user?.role;
-
-    if (!requiredRoles.includes(userRole)) {
-      throw new ForbiddenException('You do not have permission');
-    }
-
-    return true;
+    const { user } = context.switchToHttp().getRequest();
+    return requiredRoles.includes(user.role);
   }
 }
