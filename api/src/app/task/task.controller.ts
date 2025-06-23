@@ -6,54 +6,55 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
+  Req,
+  ForbiddenException,
 } from '@nestjs/common';
-
+import { Request } from 'express';
+import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { TaskService } from './task.service';
 
-// RBAC imports
-import { Roles } from '@secure-task-manager/auth/roles.decorator';
-import { Role } from '@secure-task-manager/auth/role.enum';
-import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from '@secure-task-manager/auth/role.guard';
-
-@UseGuards(AuthGuard('jwt'), RolesGuard)
 @Controller('tasks')
 export class TaskController {
-  constructor(private readonly tasksService: TaskService) {}
+  constructor(private readonly taskService: TaskService) {}
+
+  private getRole(req: Request): string {
+    return req.headers['x-user-role']?.toString() || 'Viewer';
+  }
 
   @Post()
-  @Roles(Role.Owner, Role.Admin)
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  async create(@Body() dto: CreateTaskDto, @Req() req: Request) {
+    const role = this.getRole(req);
+    if (role !== 'Admin' && role !== 'Owner') {
+      throw new ForbiddenException('Access denied');
+    }
+    return this.taskService.create(dto);
   }
 
   @Get()
-  @Roles(Role.Owner, Role.Admin, Role.Viewer)
-  findAll() {
-    return this.tasksService.findAll();
-  }
-
-  @Get(':id')
-  @Roles(Role.Owner, Role.Admin, Role.Viewer)
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(id);
+  async findAll(@Req() req: Request) {
+    const role = this.getRole(req);
+    if (!['Admin', 'Owner', 'Viewer'].includes(role)) {
+      throw new ForbiddenException('Access denied');
+    }
+    return this.taskService.findAll();
   }
 
   @Patch(':id')
-  @Roles(Role.Owner, Role.Admin)
-  update(
-    @Param('id') id: string,
-    @Body() updateTaskDto: UpdateTaskDto,
-  ) {
-    return this.tasksService.update(id, updateTaskDto);
+  async update(@Param('id') id: string, @Body() dto: UpdateTaskDto, @Req() req: Request) {
+    const role = this.getRole(req);
+    if (role !== 'Admin' && role !== 'Owner') {
+      throw new ForbiddenException('Access denied');
+    }
+    return this.taskService.update(id, dto);
   }
 
   @Delete(':id')
-  @Roles(Role.Owner, Role.Admin)
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(id);
+  async remove(@Param('id') id: string, @Req() req: Request) {
+    const role = this.getRole(req);
+    if (role !== 'Admin' && role !== 'Owner') {
+      throw new ForbiddenException('Access denied');
+    }
+    return this.taskService.remove(id);
   }
 }

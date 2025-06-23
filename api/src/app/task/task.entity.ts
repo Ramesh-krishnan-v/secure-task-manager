@@ -1,19 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Task {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Column()
   title!: string;
 
-  @Column({ nullable: true })
-  description?: string;
-
-  @Column({ default: false })
-  completed!: boolean;
+  @Column()
+  category!: string;
 
   @Column()
-  ownerId!: string;
+  status!: string;
 }

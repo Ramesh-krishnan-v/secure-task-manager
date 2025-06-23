@@ -16,31 +16,33 @@ export class AuthService implements OnModuleInit {
 
   // Seed admin user on startup
   async onModuleInit() {
-    const adminExists = await this.userRepo.findOneBy({ username: 'admin' });
+    const adminExists = await this.userRepo.findOneBy({ email: 'admin@gmail.com' });
     if (!adminExists) {
       const admin = this.userRepo.create({
-        username: 'admin',
+        email: 'admin@gmail.com',
         password: 'admin',
         role: 'Admin',
       });
       await this.userRepo.save(admin);
       console.log('✅ Admin user created');
     }
+    else {
+       console.log('✅ Admin user exist');
+    }
   }
 
   async login(dto: LoginDto) {
     const user = await this.userRepo.findOneBy({
-      username: dto.username,
-      password: dto.password, // In production, hash and compare!
+      email: dto.email,
     });
 
-    if (!user) {
+    if (!user || user?.password !== dto.password) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
     const payload = {
       sub: user.id,
-      username: user.username,
+      email: user.email,
       role: user.role,
     };
 
@@ -51,7 +53,8 @@ export class AuthService implements OnModuleInit {
   }
 
   async register(dto: RegisterUserDto) {
-    const exists = await this.userRepo.findOneBy({ username: dto.username });
+    console.log("ssssssssssssssss", dto.email)
+    const exists = await this.userRepo.findOneBy({ email: dto.email });
     if (exists) {
       throw new UnauthorizedException('User already exists');
     }

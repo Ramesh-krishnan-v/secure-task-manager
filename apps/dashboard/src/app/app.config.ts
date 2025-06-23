@@ -2,7 +2,7 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { UserCreateComponent } from './pages/user-create/user-create.component';
-import { DashboardViewComponent } from './pages/dashboard-view/dashboard.component';
+import { DashboardViewComponent } from './pages/dashboard-view/dashboard-view.component';
 
 
 const routes: Routes = [

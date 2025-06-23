@@ -1,0 +1,26 @@
+<!-- toolbar.component.html -->
+<header class="bg-gradient-to-r from-purple-100 via-blue-100 to-pink-100 shadow-md px-6 py-4 flex justify-between items-center border-b border-purple-200">
+
+  <h2 class="text-xl font-bold text-gray-800">Dashboard</h2>
+  <div class="flex items-center gap-4">
+  <span class="text-sm text-gray-600">Role: <strong class="text-purple-700">{{ selectedRole }}</strong></span>
+
+  <div class="relative">
+    <button (click)="toggleDropdown()" class="text-purple-700 hover:text-purple-900 focus:outline-none" aria-label="Switch Role">
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path d="M10 10a4 4 0 100-8 4 4 0 000 8zM2 18a8 8 0 0116 0H2z" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <div [hidden]="!dropdownOpen" class="absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-purple-50 ring-1 ring-purple-200 z-10">
+
+
+      <button (click)="setRole('Admin')" class="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100">Admin</button>
+      <button (click)="setRole('Owner')" class="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100">Owner</button>
+      <button (click)="setRole('Viewer')" class="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100">Viewer</button>
+    </div>
+  </div>
+    <button (click)="logout()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-1.5 rounded-lg transition duration-200 shadow-md">
+      Logout
+    </button>
+  </div>
+</header>
