@@ -59,20 +59,15 @@
       }
     },
     "test": {
-      "executor": "@angular-devkit/build-angular:karma",
-      "options": {
-        "main": "apps/dashboard/src/test.ts",
-        "polyfills": "apps/dashboard/src/polyfills.ts",
-        "tsConfig": "apps/dashboard/tsconfig.spec.json",
-        "karmaConfig": "apps/dashboard/karma.conf.js",
-        "styles": ["apps/dashboard/src/styles.css"],
-        "scripts": [],
-        "assets": [
-          "apps/dashboard/src/favicon.ico",
-          "apps/dashboard/src/assets"
-        ]
-      }
-    }
+    "executor": "@nrwl/jest:jest",
+    "outputs": ["{workspaceRoot}/coverage/apps/dashboard"],
+    "options": {
+    "jestConfig": "apps/dashboard/jest.config.ts",
+    "tsConfig": "apps/dashboard/tsconfig.spec.json",
+    "passWithNoTests": true
+  }
+}
+
   },
   "tags": []
 }
